@@ -1,0 +1,125 @@
+*MRUFileComplete.txt*   Completion from last used files.
+
+		     MRU FILE COMPLETE    by Ingo Karkat
+							 *MRUFileComplete.vim*
+description			|MRUFileComplete-description|
+usage				|MRUFileComplete-usage|
+installation			|MRUFileComplete-installation|
+configuration			|MRUFileComplete-configuration|
+limitations			|MRUFileComplete-limitations|
+known problems			|MRUFileComplete-known-problems|
+todo				|MRUFileComplete-todo|
+history				|MRUFileComplete-history|
+
+==============================================================================
+DESCRIPTION					 *MRUFileComplete-description*
+
+This plugin offers an alternative completion that works like the general one,
+but lists completion candidates only from files that were recently used
+(regardless of whether the file is still loaded into a Vim buffer or not).
+By default, the 10 files edited when you last exited Vim
+(|viminfo-file-marks|) are used, but any MRU-plugin that exposes the list of
+remembered files can be configured as a source, too.
+
+SOURCE									     *
+(Original Vim tip, Stack Overflow answer, ...)
+
+SEE ALSO								     *
+
+- Check out the |CompleteHelper.vim| plugin page (vimscript #3914) for a full
+  list of insert mode completions powered by it.
+
+RELATED WORKS								     *
+(Alternatives from other authors, other approaches, references not used here.)
+
+==============================================================================
+USAGE						       *MRUFileComplete-usage*
+
+In insert mode, invoke the completion via CTRL-X CTRL-R.
+You can then search forward and backward via CTRL-N / CTRL-P, as usual.
+							     *i_CTRL-X_CTRL-R*
+CTRL-X CTRL-R		Find matches for words that start with the
+			keyword in front of the cursor, looking only into
+			recently used files.
+							     *v_CTRL-X_CTRL-R*
+{Visual}CTRL-X CTRL-R	Find matches for words that start with the
+			selected text, looking only into recently used files.
+
+			Further use of CTRL-X CTRL-R will copy the words
+			following the previous expansion.
+
+==============================================================================
+INSTALLATION					*MRUFileComplete-installation*
+
+The code is hosted in a Git repo at
+    https://github.com/inkarkat/vim-MRUFileComplete
+You can use your favorite plugin manager, or "git clone" into a directory used
+for Vim |packages|. Releases are on the "stable" branch, the latest unstable
+development snapshot on "master".
+
+This script is also packaged as a |vimball|. If you have the "gunzip"
+decompressor in your PATH, simply edit the *.vmb.gz package in Vim; otherwise,
+decompress the archive first, e.g. using WinZip. Inside Vim, install by
+sourcing the vimball or via the |:UseVimball| command. >
+    vim MRUFileComplete*.vmb.gz
+    :so %
+To uninstall, use the |:RmVimball| command.
+
+DEPENDENCIES					*MRUFileComplete-dependencies*
+
+- Requires Vim 7.0 or higher.
+- Requires the |ingo-library.vim| plugin (vimscript #4433), version 1.036 or
+  higher.
+- Requires the |CompleteHelper.vim| plugin (vimscript #3914), version 1.60 or
+  higher.
+
+==============================================================================
+CONFIGURATION				       *MRUFileComplete-configuration*
+
+For a permanent configuration, put the following commands into your |vimrc|:
+			*g:MRUFileComplete_MRUGenerator*
+The plugin requires a List of filespecs that represent the recently used
+files. By default, these are taken from the numbered marks (|'0|..'9). If you
+use another MRU plugin, you can configure its files as the completion source
+by defining a Funcref that is invoked without arguments, and expected to
+return a List of filespecs: >
+    let g:MRUFileComplete_MRUGenerator = function('MruMenu#Get')
+<
+						       *MRUFileComplete-remap*
+If you want to use a different mapping, map your keys to the
+<Plug>(MRUFileComplete) mapping target _before_ sourcing the script
+(e.g. in your |vimrc|): >
+    imap <C-x><C-r> <Plug>(MRUFileComplete)
+    vmap <C-x><C-r> <Plug>(MRUFileComplete)
+<
+==============================================================================
+LIMITATIONS					 *MRUFileComplete-limitations*
+
+KNOWN PROBLEMS				      *MRUFileComplete-known-problems*
+
+TODO							*MRUFileComplete-todo*
+
+IDEAS						       *MRUFileComplete-ideas*
+
+CONTRIBUTING					  *MRUFileComplete-contribute*
+
+Report any bugs, send patches, or suggest features via the issue tracker at
+https://github.com/inkarkat/vim-MRUFileComplete/issues or email (address
+below).
+
+==============================================================================
+HISTORY						     *MRUFileComplete-history*
+
+GOAL
+First published version.
+
+0.01	22-Feb-2019
+Started development.
+
+==============================================================================
+Copyright: (C) 2019 Ingo Karkat
+The VIM LICENSE applies to this plugin; see |copyright|.
+
+Maintainer:	Ingo Karkat <ingo@karkat.de>
+==============================================================================
+ vim:tw=78:ts=8:ft=help:norl:
