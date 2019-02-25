@@ -34,12 +34,16 @@ function! MRUFileComplete#MRUFileComplete( findstart, base ) abort
     endif
 
     if a:findstart
-	" Locate the start of the keyword under cursor.
-	let l:startCol = searchpos('\k*\%#', 'bn', line('.'))[1]
-	if l:startCol == 0
-	    let l:startCol = col('.')
+	if s:selectedBaseCol
+	    return s:selectedBaseCol - 1    " Return byte index, not column.
+	else
+	    " Locate the start of the keyword under cursor.
+	    let l:startCol = searchpos('\k*\%#', 'bn', line('.'))[1]
+	    if l:startCol == 0
+		let l:startCol = col('.')
+	    endif
+	    return l:startCol - 1 " Return byte index, not column.
 	endif
-	return l:startCol - 1 " Return byte index, not column.
     else
 	" Find matches starting with a:base.
 	let l:matches = []
@@ -49,6 +53,7 @@ function! MRUFileComplete#MRUFileComplete( findstart, base ) abort
 endfunction
 
 function! MRUFileComplete#Expr() abort
+    let s:selectedBaseCol = 0
     set completefunc=MRUFileComplete#MRUFileComplete
 
     let s:repeatCnt = 0 " Important!
